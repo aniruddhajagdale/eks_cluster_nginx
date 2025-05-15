@@ -7,6 +7,11 @@ on:
       - dev
     paths:
       - '**.tf'
+
+permissions:
+  id-token: write
+  contents: read
+  
 jobs:
   eks_cluster_nginx_deployment:
     runs-on: ubuntu-latest
