@@ -83,7 +83,6 @@ jobs:
         run: | 
           CLUSTER_NAME=$(terraform output eks_cluster_name)
           echo "CLUSTER_NAME=$CLUSTER_NAME" >> $GITHUB_ENV
-        working-directory: ${{ env.WORKING_DIR }}
     
       # Install kubectl on the runner 
       - name: Set up kubectl
