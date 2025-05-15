@@ -16,12 +16,12 @@ provider "aws" {
   profile = var.region
 }
 
-data "aws_eks_cluster_auth " "cluster_name" {
-  name = module.eks.eks_cluster_name
+data "aws_eks_cluster_auth" "cluster_name" {
+  name = module.eks.cluster_name
 }
 
 data "aws_eks_cluster" "cluster_name" {
-  name = module.eks.eks_cluster_name
+  name = module.eks.cluster_name
 }
 
 provider "kubernetes" {
