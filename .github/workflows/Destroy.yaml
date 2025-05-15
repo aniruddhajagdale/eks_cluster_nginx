@@ -24,7 +24,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.6.6"
+          terraform_version: latest
 
       - name: Set Working Directory
         run: echo "WORKING_DIR=./environment/${{ inputs.environment }}" >> $GITHUB_ENV
