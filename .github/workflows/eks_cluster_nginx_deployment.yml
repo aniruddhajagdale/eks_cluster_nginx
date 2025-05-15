@@ -98,7 +98,7 @@ jobs:
   
       - name: Update kube-config
         run: |
-          aws eks update-kubeconfig --name $CLUSTER_NAME --region ${{ vars.TF_VAR_region }}
+          aws eks update-kubeconfig --name "$CLUSTER_NAME" --region ${{ vars.TF_VAR_region }}
       
       - name: Deploy Nginx with Helm
         run: |
