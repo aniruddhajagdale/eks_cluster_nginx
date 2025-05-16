@@ -81,7 +81,7 @@ jobs:
       - name: Extract Cluster name
         id: tf_output
         run: |
-          echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> $GITHUB_ENV
+            echo "Output from terraform: $(terraform output -raw eks_cluster_name)"
     
       # Install kubectl on the runner 
       - name: Set up kubectl
