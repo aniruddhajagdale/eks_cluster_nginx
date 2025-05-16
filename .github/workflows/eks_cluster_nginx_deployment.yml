@@ -82,6 +82,7 @@ jobs:
         id: tf_output
         run: |
             echo "Output from terraform: $(terraform output -raw eks_cluster_name)"
+        working-directory: ${{ env.WORKING_DIR }}
     
       # Install kubectl on the runner 
       - name: Set up kubectl
