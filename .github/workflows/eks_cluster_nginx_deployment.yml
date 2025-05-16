@@ -11,7 +11,7 @@ on:
 permissions:
   id-token: write
   contents: read
-  
+
 jobs:
   eks_cluster_nginx_deployment:
     runs-on: ubuntu-latest
@@ -24,7 +24,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with: 
-          terraform_version: "1.6.6"
+          terraform_version: latest
 
         # Set the working directory based on the branch/environment
       - name: Set Working Directory
@@ -32,10 +32,11 @@ jobs:
         run: echo "WORKING_DIR=./environment/${{ github.ref_name == 'main' && 'prod' || 'dev' }}" >> $GITHUB_ENV
 
         # Authenticate using AWS Credentials
-      - name: Configure AWS Credentials (OIDC Role)
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Configure AWS Credentials (Access Keys)
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.TF_VAR_region }}
           
       - name: Verify identity
@@ -80,7 +81,9 @@ jobs:
       # Run Terraform output commands to extract cluster name  
       - name: Extract Cluster name
         id: tf_output
-        run: echo 'CLUSTER_NAME=$(terraform output -raw eks_cluster_name)' >> $GITHUB_ENV
+        run: |
+            echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> $GITHUB_ENV
+        working-directory: ${{ env.WORKING_DIR }}
     
       # Install kubectl on the runner 
       - name: Set up kubectl
@@ -96,7 +99,7 @@ jobs:
   
       - name: Update kube-config
         run: |
-          aws eks update-kubeconfig --name $CLUSTER_NAME --region ${{ vars.TF_VAR_region }}
+          aws eks update-kubeconfig --name "$CLUSTER_NAME" --region ${{ vars.TF_VAR_region }}
       
       - name: Deploy Nginx with Helm
         run: |

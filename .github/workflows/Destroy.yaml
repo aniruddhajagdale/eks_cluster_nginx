@@ -24,7 +24,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.6.6"
+          terraform_version: latest
 
       - name: Set Working Directory
         run: echo "WORKING_DIR=./environment/${{ inputs.environment }}" >> $GITHUB_ENV
@@ -36,6 +36,23 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.TF_VAR_region }}
       
+      - name: Set Terraform Variables
+        run: |
+          echo 'TF_VAR_env=${{ vars.TF_VAR_env }}' >> $GITHUB_ENV
+          echo 'TF_VAR_key=${{ vars.TF_VAR_key }}' >> $GITHUB_ENV
+          echo 'TF_VAR_backend_bucket=${{ vars.TF_VAR_backend_bucket }}' >> $GITHUB_ENV
+          echo 'TF_VAR_cidr_block=${{ vars.TF_VAR_cidr_block }}' >> $GITHUB_ENV
+          echo 'TF_VAR_private_subnets_cidr=${{ vars.TF_VAR_private_subnets_cidr }}' >> $GITHUB_ENV
+          echo 'TF_VAR_public_subnets_cidr=${{ vars.TF_VAR_public_subnets_cidr }}' >> $GITHUB_ENV
+          echo 'TF_VAR_availability_zones=${{ vars.TF_VAR_availability_zones }}' >> $GITHUB_ENV
+          echo 'TF_VAR_cluster_name=${{ vars.TF_VAR_cluster_name }}' >> $GITHUB_ENV
+          echo 'TF_VAR_cluster_version=${{ vars.TF_VAR_cluster_version }}' >> $GITHUB_ENV
+          echo 'TF_VAR_max_size=${{ vars.TF_VAR_max_size }}' >> $GITHUB_ENV
+          echo 'TF_VAR_min_size=${{ vars.TF_VAR_min_size }}' >> $GITHUB_ENV
+          echo 'TF_VAR_desired_size=${{ vars.TF_VAR_desired_size }}' >> $GITHUB_ENV
+          echo 'TF_VAR_instance_types=${{ vars.TF_VAR_instance_types }}' >> $GITHUB_ENV
+          echo 'TF_VAR_region=${{ vars.TF_VAR_region }}' >> $GITHUB_ENV
+          
       # Run Terraform commands using the dynamic directory set above
       - name: Terraform Init
         run: terraform init
